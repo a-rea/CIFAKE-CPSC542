@@ -48,7 +48,6 @@ def extract_stats_from_images(directory):
             try:
                 # open the image using Pillow
                 image = Image.open(filepath)
-                #print(f"Processing image: {filename}")
                 # calculate statistics for the image
                 stats = calculate_image_stats(image)
                 # get the class of each image
@@ -100,6 +99,13 @@ def exploratory_data_analysis():
     train_data = pd.read_csv('image_stats_train.csv')
 
     # Exploratory Data Analysis
+
+    # plot and print the class distribution with grey grid background and reddish orange bars
+    plt.figure()
+    sns.countplot(x='label', data=train_data)
+    plt.title("Class Distribution")
+    plt.grid(color='grey', linestyle='-', linewidth=0.25, alpha=0.5)
+    plt.savefig('RF_images/class_distribution.png')
 
     corr = train_data.corr()
     plt.figure(figsize=(12, 12))
@@ -199,10 +205,10 @@ def define_RF(train_image_stats_df, test_image_stats_df):
 if __name__ == "__main__":
     # define a random forest model
 
-    train_data, test_data = construct_dataframes()
-    model = hyperparameter_tuning(train_data, False)
+    #train_data, test_data = construct_dataframes()
+    #model = hyperparameter_tuning(train_data, False)
     exploratory_data_analysis()
-    model = define_RF(train_data, test_data)
+    #model = define_RF(train_data, test_data)
 
 
 
