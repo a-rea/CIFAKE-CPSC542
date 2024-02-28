@@ -108,13 +108,20 @@ def exploratory_data_analysis():
     plt.savefig('RF_images/class_distribution.png')
 
     corr = train_data.corr()
-    plt.figure(figsize=(12, 12))
+    plt.figure(figsize=(10,10))
     #plot heatmap of the correlation matrix
-    sns.heatmap(corr, cmap='coolwarm')
+    sns.heatmap(corr, cmap='coolwarm', xticklabels=corr.columns, 
+                yticklabels=corr.columns, annot=True, fmt=".2f",
+                cbar_kws={'label': 'Correlation Coefficient'})
     plt.title("Image Statistics Correlation Matrix")
+
+    # improve readability of the plot
+    plt.xticks(rotation=45)
+    plt.yticks(rotation=45)
+
+    plt.savefig('RF_images/correlation_matrix.png')
     # show the plot
     plt.show()
-    plt.savefig('RF_images/correlation_matrix.png')
 
 
     # plot histograms of the image statistics
@@ -205,10 +212,10 @@ def define_RF(train_image_stats_df, test_image_stats_df):
 if __name__ == "__main__":
     # define a random forest model
 
-    #train_data, test_data = construct_dataframes()
-    #model = hyperparameter_tuning(train_data, False)
+    train_data, test_data = construct_dataframes()
+    model = hyperparameter_tuning(train_data, False)
     exploratory_data_analysis()
-    #model = define_RF(train_data, test_data)
+    model = define_RF(train_data, test_data)
 
 
 

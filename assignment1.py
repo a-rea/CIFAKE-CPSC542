@@ -17,6 +17,7 @@ from tensorflow.keras.optimizers import Adam
 train_folder = "train"
 validation_folder = "test"
 
+#data pipeline for handling preprocessing and augmentation
 def data_processing():
     # load the images and create
     train = ImageDataGenerator(rescale=1/255, shear_range=0.2).flow_from_directory(train_folder,
@@ -30,7 +31,7 @@ def data_processing():
                                                                     class_mode='binary')
     return train, test
 
-
+# process to define the model
 def construct_model():
   cnn = kb.Sequential()
 
@@ -74,6 +75,7 @@ def construct_model():
 
   return cnn
 
+# pipeline to compile and fit the model (training, validation, and predictions)
 def compile_and_fit(model, train, test, ep, batch_size=32):
     model.compile(optimizer=Adam(learning_rate=0.0005),
                   loss='binary_crossentropy',
@@ -82,7 +84,6 @@ def compile_and_fit(model, train, test, ep, batch_size=32):
     model.save('CIFAKE_cnn.h5')
 
     #Evaluaion of the model
-    print("PRINTING THE EVALUATION OF THE MODEL")
     model.evaluate(test)
 
     return history
@@ -138,7 +139,6 @@ def plot_predictions(cnn, test):
 
         # set title to predicted class and true class
         pred_class = 1 if predictions[i] > 0.5 else 0
-        print("PRED CLASS", pred_class)
         true_class = labels[i]
         ax.set_title(f"Pred: {pred_class}, True: {true_class}",
                     color=("green" if pred_class == true_class else "red"))
@@ -158,9 +158,9 @@ def plot_confusion_matrix(model, test):
     plt.xlabel(f"Accuracy: {accuracy:.2f}")
     plt.show()
     plt.savefig("CNN_images/cnn_confusion_matrix350.png")
-    print(confusion_matrix)
     
 
+# entire pipeline from data processing and augmentation to training, validation, and predictions
 if __name__ == "__main__":
     train, test = data_processing()
     cnn = construct_model()
